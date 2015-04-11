@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>Shell.js</title>
+<meta name="viewport" content="width=device-width" />
+<script type="text/javascript" charset="utf-8" src="../nar.js/lib/zip.js"></script>
+<script type="text/javascript" charset="utf-8" src="../nar.js/lib/mime-types.js"></script>
+<script type="text/javascript" charset="utf-8" src="../nar.js/lib/encoding.js"></script>
+<script type="text/javascript" charset="utf-8" src="../nar.js/src/Nar.js"></script>
+<script type="text/javascript" charset="utf-8" src="bin/Shell.js"></script>
+<script type="text/javascript">
+// zip.js setting
+zip.useWebWorkers = true
+zip.workerScriptsPath = "../nar.js/lib/"
+
+window.addEventListener("load", function(){
+  // start download.
+  console.log("downloading emily4.nar");
+  new Nar("https://dl.dropboxusercontent.com/u/265158/GitHub/nar.js/nar/emily4.nar", function(nar) {
+    console.log("downloaded.");
+    window.nar = nar;
+    console.log("loading shell.");
+    new Shell(nar, "master", function(shell){
+      console.log("loaded shell.");
+      window.shell = shell;
+      var touchHandler = function(e){console.log(e);};
+      new Surface(shell, 2, touchHandler, function(surface){
+        console.log("loaded surface.");
+        window.surface = surface;
+        new Balloon(shell, 0, touchHandler, function(balloon){
+          console.log("loaded balloon.");
+          window.balloon = balloon;
+          new Scope(surface, balloon, function(scope){
+            console.log("loaded scope.");
+            window.scope = scope;
+            /*
+            scopes = new Scopes();
+            scopes.scope(0).surface(0);
+            */
+          });
+        });
+      });
+    });
+  });
+});
+</script>
+</head>
+<body>
+</body>
+</html>
